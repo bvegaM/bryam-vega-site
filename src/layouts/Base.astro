@@ -10,12 +10,15 @@ interface Props {
   description?: string;
   ogType?: 'website' | 'article';
   heroImage?: string;
+  /** JSON-LD object (e.g. Person + WebSite) for richer Google results */
+  jsonLd?: Record<string, unknown>;
 }
 const {
   title,
   description = 'Bryam Vega — Senior Software Architect & Tech Lead. Engineering notes from inside enterprise systems.',
   ogType = 'website',
   heroImage,
+  jsonLd,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -41,6 +44,10 @@ const ogImage = heroImage && Astro.site ? siteUrl(heroImage, Astro.site) : undef
     <meta property="og:locale" content="en_US" />
     {ogImage && <meta property="og:image" content={ogImage} />}
     <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
 
     <script is:inline>
       (function () {

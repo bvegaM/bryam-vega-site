@@ -1,11 +1,46 @@
 ---
 import Base from '../layouts/Base.astro';
 import HomeContent from '../components/HomeContent.astro';
+
+const site = Astro.site?.href ?? 'https://www.bryamvega.com';
+const siteId = `${site.replace(/\/$/, '')}/#website`;
+const personId = `${site.replace(/\/$/, '')}/#person`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': siteId,
+      url: site,
+      name: 'Bryam Vega',
+      description:
+        'Field notes and talks on engineering craft, APIs, agents, and Java — Bryam Vega, Thoughtworks.',
+      publisher: { '@id': personId },
+    },
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: 'Bryam David Vega Moreno',
+      alternateName: ['Bryam Vega', 'Bryam D. Vega'],
+      url: site,
+      jobTitle: 'Senior Software Architect · Senior Consultant',
+      worksFor: { '@type': 'Organization', name: 'Thoughtworks' },
+      sameAs: [
+        'https://github.com/bvegaM',
+        'https://www.linkedin.com/in/bryamvega',
+        'https://medium.com/@vegabryam40',
+        'https://sessionize.com/bryam-vega',
+      ],
+    },
+  ],
+};
 ---
 
 <Base
   title="Bryam Vega — Senior Software Architect"
   description="Bryam Vega — field notes and talks: engineering craft, design sense, and lessons from production (APIs, agents, Java). Thoughtworks."
+  jsonLd={jsonLd}
 >
   <HomeContent />
 </Base>
