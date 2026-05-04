@@ -13,13 +13,13 @@ draft: false
 
 The first visible shift happened on a Jira card for a new internal endpoint.
 
-The ticket was straightforward: add an OpenAPI contract entry, run Spectral validation, and check for breaking changes. Normally that would begin with a fresh spec. This time, someone wrote a `SKILL.md` with the exact workflow instead. The agent ran it, the output was correct, and the team moved on without losing clarity.
+The ticket was straightforward: add an OpenAPI contract entry, run Spectral validation, and check for breaking changes. Normally that would begin with a fresh spec. This time, someone wrote a `SKILL.md` with the exact workflow instead. The agent ran it, the output was correct, and the team moved on.
 
-That ticket was the first visible move, but the shift had been happening before that. There was no meeting where someone said "let's drop the spec here." It happened organically. We had started with Spec-Driven Development (SDD) — defining requirements, writing structured markdown specs, feeding them to the AI coding agent. The process worked. But for a specific category of tasks — repetitive, well-understood, technical — we noticed something: nobody was reading the spec afterward. The agent consumed it once, generated the code, and the spec sat static, never updated, never referenced again.
+That ticket made visible something that had been forming for weeks. There was no meeting where someone said "let's drop the spec here." It happened organically. We had started with Spec-Driven Development (SDD) — defining requirements, writing structured markdown specs, feeding them to the AI coding agent. The process worked. But for a specific category of tasks — repetitive, well-understood, technical — we noticed something: nobody was reading the spec afterward. The agent consumed it once, generated the code, and the spec sat static, never updated, never referenced again.
 
-So we stopped writing them.
+When someone proposed dropping the spec for these cases, the pushback was real. Specs are traceability. Specs are onboarding. Specs are what you show an auditor. All legitimate concerns. What we landed on, after enough rounds of disagreement, was simple: the trace doesn't disappear — it changes form. Instead of a `spec.md` that describes what we want, we write a `SKILL.md` that encodes what we know how to do. The skill *is* the artifact. If a new engineer wants to understand how documentation gets generated, they read the skill. If an audit asks what the agent did, the skill is what it did. Traceability survives. Ceremony does not.
 
-Instead, we started writing `SKILL.md` files. Instructions. Reusable, executable, callable by any agent in any session. Document generation. API process creation. Vulnerability detection. The output was the same. The friction was gone.
+So we stopped writing specs for that category of work. We started writing `SKILL.md` files instead. Instructions. Reusable, executable, callable by any agent in any session. Document generation. API process creation. Vulnerability detection. The output was the same. The friction was gone.
 
 That was the moment I realized we had shifted methodologies without naming the shift.
 
@@ -53,7 +53,7 @@ What accumulates over time is not documentation. Not specs. **Capability.** The 
 
 As Zak puts it: *"Specification is ephemeral. Skills are durable."*
 
-That contrast is directionally right, but in teams durability is relative, not absolute. A migration skill that works for Spring Boot 4.0 and Java 25 may need refactoring in the next major cycle. What's truly durable is the pattern of capture: the team's habit of recognizing when repeated work deserves to be codified.
+That contrast is directionally right, but in teams durability is relative, not absolute. A skill that works for one major version of a framework may need refactoring at the next. What's truly durable is the pattern of capture: the team's habit of recognizing when repeated work deserves to be codified.
 
 Zak describes three types of skills:
 - **Operational** — callable, discrete, reusable. Does one thing well.
@@ -64,48 +64,57 @@ These types nest freely. A composed skill can invoke a meta-skill mid-run. The c
 
 ---
 
-## SkDD as a Methodology With Phases
+## The Shape of the Methodology: One Gate, Then a Loop
 
-What the team experience added to the pattern was structure: **SkDD with explicit phases**.
+What the team experience added to the pattern was structure. SDD has it — the spec-kit workflow defines a clear sequence: **Specify → Plan → Tasks → Implement**. Each phase produces an artifact that constrains the next. Human review at each checkpoint ensures alignment.
 
-SDD has them. The spec-kit workflow from GitHub defines it clearly:
+SkDD deserves the same rigor, but it doesn't have the same shape. SDD is linear because intent must be settled before implementation. SkDD is **a gate followed by a loop** — because the hard part is deciding what earns codification, and everything after that is iteration.
 
-**Specify → Plan → Tasks → Implement**
+![SkDD Gate and Loop](/images/blog/skdd/skdd_phases.svg)
 
-Each phase produces an artifact that constrains and guides the next. There's a chain of accountability from intent to implementation. Human review at each checkpoint ensures alignment.
+The gate is **Observe**. Before anything else, someone has to look at a process and decide whether it earns the right to be codified. Is it truly repetitive? Is it well-understood enough to encode without ambiguity? Does it require business judgment that isn't yet settled? If the answer doesn't clear the gate, you don't capture it. You build it once, the SDD way, and revisit later.
 
-SkDD deserves the same rigor. From real team experience, the natural flow is:
+If the gate clears, four activities follow in a loop:
 
-![SkDD Five Phases](/images/blog/skdd/skdd_phases.svg)
+**Capture** — write the `SKILL.md`. Encode what you know how to do, not what you want to happen. Instructions, context, expected output.
 
-**1. Observe**
-Recognize that a process is repetitive, well-understood, and doesn't require business definition. This is the most important phase — and the one most likely to be skipped.
+**Execute** — the agent invokes the skill. The process runs without rebuilding context from scratch.
 
-**2. Capture**
-Write the `SKILL.md`. Encode what you know how to do, not what you want to happen. Instructions, context, expected output.
+**Refine** — the skill improves with each execution. Edge cases get handled. Instructions sharpen. The team's collective knowledge crystallizes into the file.
 
-**3. Execute**
-The agent invokes the skill. The process runs without rebuilding context from scratch.
+**Compose** — skills invoke other skills. Pipelines form. A vulnerability scanner feeds a remediation skill. A documentation skill feeds a review skill. The system becomes more capable than any individual skill.
 
-**4. Refine**
-The skill improves with each execution. Edge cases get handled. Instructions sharpen. The team's collective knowledge crystallizes.
-
-**5. Compose**
-Skills invoke other skills. Pipelines form. A vulnerability scanner feeds a remediation skill. A documentation skill feeds a review skill. The system becomes more capable than any individual skill.
+The loop is mechanical. The gate is judgment. Flatten them into a single linear sequence and you quietly remove the most important step.
 
 ---
 
-## The Danger of Skipping Phase One
+## Why The Gate Matters
 
-Tools like `skill-creator` can generate a `SKILL.md` automatically. That sounds like acceleration. In practice, it's a risk.
+Tools like `skill-creator` can generate a `SKILL.md` automatically. That sounds like acceleration. In practice, it's the bypass.
 
-`skill-creator` jumps directly to **Capture**. It skips **Observe** entirely. No one has decided whether this process *deserves* to be a skill. No one has asked: is this truly repetitive? Is it well-understood enough to codify? Does it add to the repo's capability or just its noise?
+`skill-creator` jumps straight to **Capture**. It assumes the gate has already been cleared. No one has decided whether this process *deserves* to be a skill. No one has asked: is this truly repetitive? Is it well-understood enough to codify? Does it add capability or just noise?
 
-The result is **skill sprawl** — a repository full of skills nobody requested, duplicating each other, encoding processes that weren't ready to be skills yet.
+The result is **skill sprawl** — a repository full of skills nobody requested, duplicating each other, encoding processes that weren't ready. Over time the skill set itself becomes a maintenance burden. The ratio of useful skills to noise drops. Engineers stop trusting the registry. The methodology that was supposed to compound capability starts compounding mess instead.
 
 ![Skill Sprawl vs Curated Skills](/images/blog/skdd/skill_sprawl.svg)
 
-The most important phase in SkDD is not Capture. It's **Observe**. It's the moment of human judgment that decides whether something earns the right to be codified. Remove that phase and you remove the intelligence from the methodology.
+The gate is what prevents this. It's the moment of human judgment that decides whether something earns the right to be codified. Remove it and you remove the intelligence from the methodology.
+
+---
+
+## Keeping the Gate Honest: Team Structure Around Skills
+
+The gate is human judgment, which means it scales the way human judgment scales — through ownership and lightweight process, not through gut feel. A few practices keep it honest at team scale.
+
+**Each skill needs explicit ownership.** The simplest model is similar to `CODEOWNERS`: one primary owner accountable for correctness and one backup owner for continuity. Without this, skills drift into "everyone's and no one's" territory.
+
+**Review needs criteria, not just approval.** A skill review should ask: is the process actually repetitive, are the preconditions explicit, are the outputs testable, and does this duplicate an existing skill? That keeps the skill catalog curated instead of becoming a second pile of stale docs.
+
+**Approval level should match operational risk.** For low-risk internal automation, senior engineer review is enough. For skills that touch compliance, contracts, or cross-team interfaces, include the relevant domain owner before merge.
+
+**When the gate is contested, default to repetition.** Two senior engineers can reasonably disagree on whether something deserves a skill now or later. The lightweight rule that worked for us: if the process has repeated at least twice and no new business decision appears on the third run, capture it as a skill and refine from real usage.
+
+SkDD scales when governance stays lightweight but explicit. The goal is not bureaucracy; it's preserving judgment while capability compounds.
 
 ---
 
@@ -128,25 +137,25 @@ Let me walk through a real case.
 
 In an API-First team, every new endpoint follows the same path: a stakeholder describes what they need, the team creates the contract in OpenAPI, validates it against Spectral rules, and checks for breaking changes. Repeat for every endpoint.
 
-**With spec-kit** — one of the most widely adopted SDD workflows — this process started with a `constitution.md`: defining structure, constraints, and validation rules before the agent could start. The problem: Spectral already had those rules. The constitution was re-declaring what the toolchain already knew. The process was verbose for something the toolchain had already resolved.
+**With spec-kit** — one of the most widely adopted SDD workflows — this process starts with a `constitution.md`: project-wide constraints, architectural commitments, validation principles. Used well, that constitution captures things no linter can. But for a workflow this mechanical — same rules, same structure, same flow — the constitution becomes friction without payoff. Nothing in it crosses a team boundary. Nothing in it requires alignment beyond the team that already wrote the rules. The ceremony is paying for an audience that isn't in the room.
 
-Here's what the same process looks like through the five SkDD phases:
+Here's what the same process looks like through the gate and the loop:
 
 ![SkDD API-First Endpoint Example](/images/blog/skdd/skdd_api_example.svg)
 
-**1. Observe**
+**The gate clears (Observe).**
 The team notices that every new endpoint follows the exact same pattern. Same Spectral rules. Same structure. Same validation flow. Nobody is making a new business decision each time — they're executing the same process repeatedly. That recognition is the signal: *this deserves to be a skill.*
 
-**2. Capture**
-A `SKILL.md` gets written. It encodes the instructions: take the endpoint description, generate the OpenAPI contract entry, validate against Spectral rules, verify for breaking changes. No constitution. No ceremony. Just instructions the agent can follow every time.
+**Capture.**
+A `SKILL.md` gets written. It encodes the instructions: take the endpoint description, generate the OpenAPI contract entry, validate against Spectral rules, verify for breaking changes. Just instructions the agent can follow every time.
 
-**3. Execute**
+**Execute.**
 The stakeholder describes what they need — maybe in a simple `.md` file, maybe in a single message. The skill takes it from there. The contract gets created, validated, and checked. What used to be Specify → Plan → Tasks → Implement is now one invocation.
 
-**4. Refine**
+**Refine.**
 Over time, the skill sharpens. A new Spectral rule gets added. A versioning edge case gets handled. The team's collective knowledge about what a good endpoint looks like crystallizes into the skill itself.
 
-**5. Compose**
+**Compose.**
 The endpoint creation skill chains into others: contract generation feeds a controller scaffolding skill, which feeds an auto-documentation skill. The pipeline builds itself incrementally.
 
 The intent — *"we need an endpoint that does X"* — still comes from the stakeholder. That part doesn't disappear. But the process of turning that intent into a valid, compliant, production-ready contract? That's a skill now. It doesn't need a spec every time.
@@ -163,20 +172,6 @@ SkDD works best alongside SDD when:
 - The skill would cross an **organizational boundary** — where the output isn't just reused by the same team but consumed by others
 
 In these cases, the skill arrives *after* the spec, not instead of it. Someone has to define what the system should do before the agent can be trusted to do it repeatedly.
-
----
-
-## Team Structure: Governing Skills Without Slowing Down
-
-If a team treats `SKILL.md` files as shared capability, each skill needs explicit ownership. The simplest model is similar to `CODEOWNERS`: one primary owner accountable for correctness and one backup owner for continuity. Without this, skills drift into "everyone's and no one's" territory.
-
-Review also needs criteria, not just approval. A skill review should ask: is the process actually repetitive, are the preconditions explicit, are the outputs testable, and does this duplicate an existing skill? That keeps the skill catalog curated instead of becoming a second pile of stale docs.
-
-Approval should come from the same people who understand operational risk for that workflow. For low-risk internal automation, senior engineer review is enough. For skills that touch compliance, contracts, or cross-team interfaces, include the relevant domain owner before merge.
-
-As teams grow, disagreement is healthy and expected. Two senior engineers can reasonably disagree on whether something deserves a skill now or later. When that happens, default to a lightweight rule: if the process has repeated at least twice and no new business decision appears in the third run, capture it as a skill and refine from real usage.
-
-SkDD scales when governance stays lightweight but explicit. The goal is not bureaucracy; it's preserving judgment while capability compounds.
 
 ---
 
@@ -197,7 +192,7 @@ The **Implement** phase of SDD is often the birthplace of a SkDD skill. Once the
 | **Primary artifact** | Specification | SKILL.md |
 | **Human role** | Define what should happen | Decide if it deserves a skill |
 | **Value** | Alignment across stakeholders | Accumulated capability |
-| **Risk** | Drift between spec and code | Skill sprawl without Observe |
+| **Risk** | Specs go stale — written, then orphaned | Skills proliferate — captured without judgment |
 
 ![SDD vs SkDD Decision Flow](/images/blog/skdd/sdd_vs_skdd.svg)
 
@@ -211,17 +206,17 @@ Ask yourself one question before starting any task:
 
 **Yes** → Start with SDD. Write the spec. Define intent. Get alignment. Then, once implemented, ask if it deserves to become a skill.
 
-**No** → Start with SkDD. Observe. Capture. Execute. Refine. Compose.
+**No** → Start with SkDD. Run it through the gate. If it clears, capture, execute, refine, compose.
 
 The mistake teams make is applying SDD to everything out of habit, and applying SkDD to everything out of speed. Both are wrong. The methodology should match the nature of the work.
 
 ---
 
-## Why This Matters Now
+## What This Is Really About
 
 We're in a moment where AI agents can execute almost anything — if you tell them how. The bottleneck is no longer execution. It's *judgment*: knowing what to codify, when to define intent explicitly, and when to trust that the team already knows enough to just build a skill.
 
-Nobody defines what "simple" actually means. While that definition stays implicit, teams end up writing three-hour specs for repetitive processes they've solved a hundred times — specs nobody will read again, that only existed to birth the code.
+The danger isn't that teams will pick the wrong methodology. It's that they'll skip the choice entirely. They'll write three-hour specs for work the team has already solved a hundred times, because that's what the workflow expects. Or they'll fire `skill-creator` at every recurring task, because that's what acceleration looks like. Both failures share the same root: nobody stopped at the gate to ask whether the work in front of them belonged to SDD's territory or SkDD's.
 
 SkDD isn't a replacement for thinking. It's a way to make sure that when your team thinks through something once, you never have to think through it again. The spec doesn't disappear — it just stops being the answer to every question.
 
