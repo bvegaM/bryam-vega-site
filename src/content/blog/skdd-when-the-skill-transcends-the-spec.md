@@ -11,9 +11,11 @@ draft: false
 
 ## It Started With a Jira Board
 
-At some point, my team stopped writing specs for certain tasks.
+The first visible shift happened on a Jira card for a new internal endpoint.
 
-Not intentionally. There was no meeting where someone said "let's drop the spec here." It happened organically. We had started with Spec-Driven Development (SDD) — defining requirements, writing structured markdown specs, feeding them to the AI coding agent. The process worked. But for a specific category of tasks — repetitive, well-understood, technical — we noticed something: nobody was reading the spec afterward. The agent consumed it once, generated the code, and the spec sat static, never updated, never referenced again.
+The ticket was straightforward: add an OpenAPI contract entry, run Spectral validation, and check for breaking changes. Normally that would begin with a fresh spec. This time, someone wrote a `SKILL.md` with the exact workflow instead. The agent ran it, the output was correct, and the team moved on without losing clarity.
+
+That ticket was the first visible move, but the shift had been happening before that. There was no meeting where someone said "let's drop the spec here." It happened organically. We had started with Spec-Driven Development (SDD) — defining requirements, writing structured markdown specs, feeding them to the AI coding agent. The process worked. But for a specific category of tasks — repetitive, well-understood, technical — we noticed something: nobody was reading the spec afterward. The agent consumed it once, generated the code, and the spec sat static, never updated, never referenced again.
 
 So we stopped writing them.
 
@@ -50,6 +52,8 @@ If yes — you capture it. If no — you build and move on.
 What accumulates over time is not documentation. Not specs. **Capability.** The repo becomes progressively more capable because every repeated process gets codified into something reusable.
 
 As Zak puts it: *"Specification is ephemeral. Skills are durable."*
+
+That contrast is directionally right, but in teams durability is relative, not absolute. A migration skill that works for Spring Boot 4.0 and Java 25 may need refactoring in the next major cycle. What's truly durable is the pattern of capture: the team's habit of recognizing when repeated work deserves to be codified.
 
 Zak describes three types of skills:
 - **Operational** — callable, discrete, reusable. Does one thing well.
@@ -162,6 +166,20 @@ In these cases, the skill arrives *after* the spec, not instead of it. Someone h
 
 ---
 
+## Team Structure: Governing Skills Without Slowing Down
+
+If a team treats `SKILL.md` files as shared capability, each skill needs explicit ownership. The simplest model is similar to `CODEOWNERS`: one primary owner accountable for correctness and one backup owner for continuity. Without this, skills drift into "everyone's and no one's" territory.
+
+Review also needs criteria, not just approval. A skill review should ask: is the process actually repetitive, are the preconditions explicit, are the outputs testable, and does this duplicate an existing skill? That keeps the skill catalog curated instead of becoming a second pile of stale docs.
+
+Approval should come from the same people who understand operational risk for that workflow. For low-risk internal automation, senior engineer review is enough. For skills that touch compliance, contracts, or cross-team interfaces, include the relevant domain owner before merge.
+
+As teams grow, disagreement is healthy and expected. Two senior engineers can reasonably disagree on whether something deserves a skill now or later. When that happens, default to a lightweight rule: if the process has repeated at least twice and no new business decision appears in the third run, capture it as a skill and refine from real usage.
+
+SkDD scales when governance stays lightweight but explicit. The goal is not bureaucracy; it's preserving judgment while capability compounds.
+
+---
+
 ## The Real Relationship: Not Alternatives, But Phases
 
 This is the claim I want to make clearly:
@@ -203,7 +221,7 @@ The mistake teams make is applying SDD to everything out of habit, and applying 
 
 We're in a moment where AI agents can execute almost anything — if you tell them how. The bottleneck is no longer execution. It's *judgment*: knowing what to codify, when to define intent explicitly, and when to trust that the team already knows enough to just build a skill.
 
-Here's what nobody in SDD circles wants to admit: nobody defines what "simple" actually means. And while nobody defines it, teams end up writing three-hour specs for repetitive processes they've already solved a hundred times — specs nobody will read again, that only existed to birth the code, and then die in the repo.
+Nobody defines what "simple" actually means. While that definition stays implicit, teams end up writing three-hour specs for repetitive processes they've solved a hundred times — specs nobody will read again, that only existed to birth the code.
 
 SkDD isn't a replacement for thinking. It's a way to make sure that when your team thinks through something once, you never have to think through it again. The spec doesn't disappear — it just stops being the answer to every question.
 
