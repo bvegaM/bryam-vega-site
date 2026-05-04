@@ -3,7 +3,7 @@ import sitemap from '@astrojs/sitemap';
 import { rehypePrefixRootPaths } from './rehype-prefix-root-paths.mjs';
 
 // Production domain (local builds & custom hosting).
-const defaultSite = 'https://bryamvega.com';
+const defaultSite = 'https://www.bryamvega.com';
 
 // GitHub Actions → Pages: set site + base from GITHUB_REPOSITORY.
 // - User site repo: <user>.github.io → base "/"
