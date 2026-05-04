@@ -11,11 +11,16 @@ const defaultSite = 'https://bryamvega.com';
 const repository = process.env.GITHUB_REPOSITORY || '';
 const [ghOwner, ghRepo] = repository.split('/');
 const isGithubPages = process.env.GITHUB_PAGES === 'true';
+// Custom domain on Pages is served at the domain root → site + base below.
+const siteUrlOverride = (process.env.SITE_URL || '').replace(/\/$/, '');
 
 let site = defaultSite;
 let base = '/';
 
-if (isGithubPages && ghOwner && ghRepo) {
+if (isGithubPages && siteUrlOverride) {
+  site = siteUrlOverride;
+  base = '/';
+} else if (isGithubPages && ghOwner && ghRepo) {
   const isUserPagesRepo = ghRepo === `${ghOwner}.github.io`;
   site = `https://${ghOwner}.github.io`;
   base = isUserPagesRepo ? '/' : `/${ghRepo}/`;

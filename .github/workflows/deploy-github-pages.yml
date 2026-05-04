@@ -38,6 +38,8 @@ jobs:
         env:
           GITHUB_PAGES: 'true'
           GITHUB_REPOSITORY: ${{ github.repository }}
+          # Custom domain (served at /, not /repo/). Change if you use www only.
+          SITE_URL: 'https://bryamvega.com'
 
       - uses: actions/upload-pages-artifact@v3
         with:
