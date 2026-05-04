@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { SERIES, slugifySeries, formatMonth } from '../lib/series';
+import { withBase } from '../lib/paths';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const seriesData = SERIES.map((s) => ({
+  meta: s,
+  posts: allPosts.filter((p) => p.data.series === s.name),
+})).filter((s) => s.posts.length > 0);
+---
+
+<Base title="Series — Bryam Vega" description="Essay series and ongoing investigations on architecture, design patterns, Spring Boot, and SkDD.">
+  <div class="container-wide">
+    <header class="article-head">
+      <span class="label">Writing tracks</span>
+      <h1>Series</h1>
+      <p class="desc">Essays grouped into ongoing investigations. Each series has a thesis, a working artifact, and at least one honest concession.</p>
+    </header>
+
+    {seriesData.length === 0 ? (
+      <p class="section-lede">No series with published posts yet.</p>
+    ) : (
+      seriesData.map(({ meta, posts }) => (
+        <section id={slugifySeries(meta.name)} style="margin-top: 3rem;">
+          <div class="section-head" style="margin-top: 0;">
+            <h2>{meta.name}</h2>
+            <span class="label">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</span>
+          </div>
+          <p class="section-lede">{meta.description}</p>
+          <ul class="series-post-list">
+            {posts.map((p) => {
+              const href = p.data.canonical ?? withBase(`/blog/${p.slug}/`);
+              const external = !!p.data.canonical;
+              return (
+                <li>
+                  <div class="post-meta">
+                    <span class="label">{formatMonth(p.data.pubDate)}</span>
+                    {external && <span class="label">Medium ↗</span>}
+                  </div>
+                  <h3>
+                    <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>{p.data.title}</a>
+                  </h3>
+                  <p class="desc">{p.data.description}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))
+    )}
+  </div>
+</Base>
+
+<style>
+  .series-post-list { list-style: none; padding: 0; margin: 0; max-width: 60rem; }
+  .series-post-list li { padding: 1.25rem 0; border-bottom: 1px solid var(--rule); }
+  .series-post-list li:first-child { padding-top: 0; }
+  .series-post-list h3 {
+    font-size: 1.4rem; line-height: 1.2;
+    margin: 0.3rem 0 0.4rem; font-weight: 500; letter-spacing: -0.01em;
+  }
+  .series-post-list h3 a { text-decoration: none; }
+  .series-post-list h3 a:hover { color: var(--accent); }
+  .series-post-list .desc { margin: 0; color: var(--ink-soft); font-size: 0.95rem; max-width: 60ch; }
+  .series-post-list .post-meta { display: flex; gap: 0.75rem; align-items: baseline; }
+</style>

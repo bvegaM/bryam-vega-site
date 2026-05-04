@@ -1,0 +1,82 @@
+---
+import { withBase } from '../lib/paths';
+
+const path = Astro.url.pathname;
+const home = withBase('/');
+const isActive = (href: string) => {
+  if (href === home) return path === home || path === home.replace(/\/$/, '');
+  return path === href || path.startsWith(href);
+};
+
+const links = [
+  { href: home, label: 'Start' },
+  { href: withBase('/blog/'), label: 'Essays' },
+  { href: withBase('/series/'), label: 'Series' },
+  { href: withBase('/talks/'), label: 'Talks' },
+  { href: withBase('/about/'), label: 'About' },
+];
+---
+
+<header class="site-header">
+  <div class="container-wide">
+    <a href={home} class="brand">Bryam Vega</a>
+
+    <nav class="nav" aria-label="Primary">
+      {links.map((l) => (
+        <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>
+      ))}
+      <span class="nav-controls">
+        <span class="nav-search-group">
+          <button
+            type="button"
+            class="nav-search-open"
+            id="search-open"
+            aria-label="Search essays"
+            aria-keyshortcuts="Meta+K Control+K"
+            title="Search — ⌘K or Ctrl+K to toggle, / to focus"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></circle>
+              <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <span class="nav-search-hint">
+            <kbd class="search-kbd">⌘K</kbd>
+            <kbd class="search-kbd">Ctrl+K</kbd>
+            <kbd class="search-kbd">/</kbd>
+          </span>
+        </span>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme">
+          <span data-theme-label>—</span>
+        </button>
+      </span>
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    const root = document.documentElement;
+    const stored = localStorage.getItem('theme');
+    const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = stored || (sysDark ? 'dark' : 'light');
+    root.setAttribute('data-theme', initial);
+
+    function setLabel() {
+      const el = document.querySelector('[data-theme-label]');
+      if (!el) return;
+      const t = root.getAttribute('data-theme');
+      el.textContent = t === 'dark' ? '☼ light' : '☾ dark';
+    }
+    setLabel();
+
+    document.addEventListener('click', function (e) {
+      if (e.target && e.target.closest && e.target.closest('#theme-toggle')) {
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        setLabel();
+      }
+    });
+  })();
+</script>

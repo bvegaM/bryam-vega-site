@@ -1,0 +1,207 @@
+---
+import { getCollection } from 'astro:content';
+import { formatMonth } from '../lib/series';
+
+const baseUrl = import.meta.env.BASE_URL;
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const searchIndex = posts.map((p) => ({
+  slug: p.slug,
+  title: p.data.title,
+  description: p.data.description,
+  tags: p.data.tags ?? [],
+  series: p.data.series,
+  pubDateLabel: formatMonth(p.data.pubDate),
+  canonical: p.data.canonical,
+}));
+---
+
+<div id="search-modal" class="search-modal" hidden>
+  <div class="search-modal-backdrop" data-search-backdrop tabindex="-1"></div>
+  <div
+    class="search-modal-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="search-modal-title"
+  >
+    <div class="search-modal-toolbar">
+      <h2 id="search-modal-title" class="search-modal-title">Search essays</h2>
+      <button type="button" class="search-modal-close" data-search-close aria-label="Close search">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <label class="search-modal-label" for="search-modal-q">Query</label>
+    <input
+      type="search"
+      id="search-modal-q"
+      class="search-modal-input"
+      autocomplete="off"
+      spellcheck="false"
+      placeholder="Title, tags, series, keywords…"
+    />
+    <p id="search-modal-count" class="search-modal-count" aria-live="polite"></p>
+    <ul id="search-modal-results" class="search-modal-results"></ul>
+    <p class="search-modal-hint">
+      <kbd class="search-kbd">⌘</kbd><kbd class="search-kbd">K</kbd> or <kbd class="search-kbd">Ctrl</kbd><kbd class="search-kbd">K</kbd> to toggle ·
+      <kbd class="search-kbd">/</kbd> to open · <kbd class="search-kbd">Esc</kbd> to close
+    </p>
+  </div>
+</div>
+
+<script define:vars={{ searchIndex, baseUrl }}>
+  const modal = document.getElementById('search-modal');
+  const openBtn = document.getElementById('search-open');
+  const input = document.getElementById('search-modal-q');
+  const ul = document.getElementById('search-modal-results');
+  const countEl = document.getElementById('search-modal-count');
+  if (!modal || !input || !ul || !countEl) return;
+
+  const backdrop = modal.querySelector('[data-search-backdrop]');
+  const closeBtn = modal.querySelector('[data-search-close]');
+
+  function haystack(p) {
+    return [p.title, p.description, (p.tags || []).join(' '), p.slug, p.series || '']
+      .join(' ')
+      .toLowerCase();
+  }
+
+  function filter(query) {
+    const words = query
+      .toLowerCase()
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+    if (!words.length) return searchIndex.slice();
+    return searchIndex.filter((p) => {
+      const h = haystack(p);
+      return words.every((w) => h.includes(w));
+    });
+  }
+
+  function render(items) {
+    ul.textContent = '';
+    if (!items.length) {
+      const li = document.createElement('li');
+      li.className = 'search-hit search-hit--empty';
+      li.textContent = 'No essays match that query.';
+      ul.appendChild(li);
+      countEl.textContent = '0 results';
+      return;
+    }
+    countEl.textContent = `${items.length} ${items.length === 1 ? 'result' : 'results'}`;
+    for (const p of items) {
+      const href = p.canonical ?? `${baseUrl}blog/${p.slug}/`;
+      const external = !!p.canonical;
+
+      const li = document.createElement('li');
+      li.className = 'search-hit';
+
+      const date = document.createElement('span');
+      date.className = 'search-hit-date';
+      date.textContent = p.pubDateLabel;
+
+      const body = document.createElement('div');
+
+      const h3 = document.createElement('h3');
+      h3.className = 'search-hit-title';
+      const a = document.createElement('a');
+      a.href = href;
+      if (external) {
+        a.target = '_blank';
+        a.rel = 'noopener';
+      }
+      a.textContent = p.title;
+      h3.appendChild(a);
+
+      const desc = document.createElement('p');
+      desc.className = 'search-hit-desc';
+      desc.textContent = p.description;
+
+      const meta = document.createElement('p');
+      meta.className = 'search-hit-tags';
+      const parts = [];
+      if (p.series) parts.push(p.series);
+      if ((p.tags || []).length) parts.push((p.tags || []).join(' · '));
+      meta.textContent = parts.join(' — ');
+
+      body.appendChild(h3);
+      body.appendChild(desc);
+      if (meta.textContent) body.appendChild(meta);
+
+      const badge = document.createElement('span');
+      badge.className = 'search-hit-badge';
+      badge.textContent = external ? 'External' : 'Essay';
+
+      li.appendChild(date);
+      li.appendChild(body);
+      li.appendChild(badge);
+      ul.appendChild(li);
+    }
+  }
+
+  function isTypingTarget(el) {
+    if (!el || !(el instanceof HTMLElement)) return false;
+    const tag = el.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true;
+    return el.isContentEditable;
+  }
+
+  function open() {
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    render(filter(input.value));
+    input.focus();
+    input.select();
+  }
+
+  function close() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    openBtn?.focus();
+  }
+
+  function toggle() {
+    if (modal.hidden) open();
+    else close();
+  }
+
+  openBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggle();
+  });
+
+  backdrop?.addEventListener('click', close);
+  closeBtn?.addEventListener('click', close);
+
+  input.addEventListener('input', () => {
+    render(filter(input.value));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+      e.preventDefault();
+      toggle();
+      return;
+    }
+    if (e.key === 'Escape' && !modal.hidden) {
+      e.preventDefault();
+      close();
+      return;
+    }
+    if (
+      e.key === '/' &&
+      !e.metaKey &&
+      !e.ctrlKey &&
+      !e.altKey &&
+      !isTypingTarget(document.activeElement) &&
+      document.activeElement?.closest?.('#search-modal') == null
+    ) {
+      e.preventDefault();
+      if (modal.hidden) open();
+      else input.focus();
+    }
+  });
+</script>

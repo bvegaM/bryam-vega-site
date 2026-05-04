@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Base title="Essays — Bryam Vega" description="Essays on architecture, design patterns, Spring Boot in production, and AI-assisted engineering.">
+  <div class="container-wide">
+    <header class="article-head">
+      <span class="label">Writing</span>
+      <h1>Essays</h1>
+      <p class="desc">Slow notes on architecture, design patterns, Spring Boot in production, and the gap between specs and skills. Many cross-posted from <a href="https://medium.com/@vegabryam40" target="_blank" rel="noopener">Medium</a>.</p>
+    </header>
+
+    {posts.length > 0 ? (
+      <ul class="post-card-list">
+        {posts.map((p) => (
+          <PostCard
+            slug={p.slug}
+            title={p.data.title}
+            description={p.data.description}
+            pubDate={p.data.pubDate}
+            heroImage={p.data.heroImage}
+            series={p.data.series}
+            canonical={p.data.canonical}
+          />
+        ))}
+      </ul>
+    ) : (
+      <p class="section-lede">No essays yet — first one is in draft.</p>
+    )}
+  </div>
+</Base>

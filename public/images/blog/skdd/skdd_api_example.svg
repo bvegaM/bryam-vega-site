@@ -1,0 +1,45 @@
+<svg width="680" height="410" viewBox="0 0 680 410" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect x="40" y="30" width="200" height="56" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+  <text x="140" y="50" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#712B13">Observe</text>
+  <text x="140" y="70" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#993C1D">Same pattern every time</text>
+  <text x="262" y="50" dominant-baseline="central" font-size="12" fill="#5F5E5A">Spectral rules already exist.</text>
+  <text x="262" y="68" dominant-baseline="central" font-size="12" fill="#5F5E5A">No new decision per endpoint.</text>
+
+  <line x1="140" y1="86" x2="140" y2="106" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="106" width="200" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="140" y="126" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#085041">Capture</text>
+  <text x="140" y="146" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56">Write the SKILL.md</text>
+  <text x="262" y="126" dominant-baseline="central" font-size="12" fill="#5F5E5A">Encode: take description,</text>
+  <text x="262" y="144" dominant-baseline="central" font-size="12" fill="#5F5E5A">generate OpenAPI, validate Spectral.</text>
+
+  <line x1="140" y1="162" x2="140" y2="182" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="182" width="200" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="140" y="202" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#085041">Execute</text>
+  <text x="140" y="222" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56">Stakeholder describes</text>
+  <text x="262" y="202" dominant-baseline="central" font-size="12" fill="#5F5E5A">One .md with the need.</text>
+  <text x="262" y="220" dominant-baseline="central" font-size="12" fill="#5F5E5A">Skill generates the contract.</text>
+
+  <line x1="140" y1="238" x2="140" y2="258" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="258" width="200" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="140" y="278" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#085041">Refine</text>
+  <text x="140" y="298" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56">Spectral rules sharpen</text>
+  <text x="262" y="278" dominant-baseline="central" font-size="12" fill="#5F5E5A">New rules added over time.</text>
+  <text x="262" y="296" dominant-baseline="central" font-size="12" fill="#5F5E5A">Breaking change checks improve.</text>
+
+  <line x1="140" y1="314" x2="140" y2="334" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="334" width="200" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="140" y="354" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#3C3489">Compose</text>
+  <text x="140" y="374" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#534AB7">Contract → scaffold → docs</text>
+  <text x="262" y="354" dominant-baseline="central" font-size="12" fill="#5F5E5A">One invocation.</text>
+  <text x="262" y="372" dominant-baseline="central" font-size="12" fill="#5F5E5A">Full pipeline from contract to docs.</text>
+</svg>

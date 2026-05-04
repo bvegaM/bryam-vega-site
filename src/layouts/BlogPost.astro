@@ -1,0 +1,65 @@
+---
+import Base from './Base.astro';
+import { formatDate, slugifySeries } from '../lib/series';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  tags?: string[];
+  series?: string;
+  heroImage?: string;
+  heroImageCaption?: string;
+  canonical?: string;
+}
+const {
+  title, description, pubDate, updatedDate,
+  tags = [], series, heroImage, heroImageCaption, canonical,
+} = Astro.props;
+---
+
+<Base title={`${title} — Bryam Vega`} description={description} ogType="article" heroImage={heroImage}>
+  <div class="container">
+    <article>
+      <header class="article-head">
+        <span class="label">
+          Essay · {formatDate(pubDate)}
+          {updatedDate && <> · updated {formatDate(updatedDate)}</>}
+        </span>
+        <h1>{title}</h1>
+        <p class="desc">{description}</p>
+        {series && (
+          <p class="label" style="margin-top: 1rem;">
+            Part of <a href={`${withBase('/series/')}#${slugifySeries(series)}`} class="label-accent">{series}</a>
+          </p>
+        )}
+      </header>
+
+      {heroImage && (
+        <figure class="article-hero">
+          <img src={heroImage.startsWith('/') ? withBase(heroImage) : heroImage} alt={heroImageCaption ?? title} />
+          {heroImageCaption && <figcaption class="article-hero-caption">{heroImageCaption}</figcaption>}
+        </figure>
+      )}
+
+      <slot />
+
+      {tags.length > 0 && (
+        <div class="tags">
+          {tags.map((tg) => <span class="tag">{tg}</span>)}
+        </div>
+      )}
+
+      {canonical && (
+        <p class="label" style="margin-top: 2.5rem;">
+          Originally published at <a href={canonical} target="_blank" rel="noopener">{canonical}</a>
+        </p>
+      )}
+
+      <hr />
+      <p class="label">← <a href={withBase('/blog/')}>All essays</a></p>
+    </article>
+  </div>
+</Base>

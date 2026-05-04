@@ -1,0 +1,42 @@
+---
+import { formatMonth } from '../lib/series';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  heroImage?: string;
+  series?: string;
+  canonical?: string;
+}
+const { slug, title, description, pubDate, heroImage, series, canonical } = Astro.props;
+const fallbackInitial = title.charAt(0).toUpperCase();
+const href = canonical ?? withBase(`/blog/${slug}/`);
+const external = !!canonical;
+---
+
+<li class="post-card">
+  <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined} aria-label={title} style="display: block; text-decoration: none;">
+    {heroImage ? (
+      <div class="hero-thumb"><img src={heroImage.startsWith('/') ? withBase(heroImage) : heroImage} alt="" loading="lazy" /></div>
+    ) : (
+      <div class="hero-thumb fallback" aria-hidden="true">{fallbackInitial}</div>
+    )}
+  </a>
+  <div>
+    <div class="post-meta">
+      <span class="label">{formatMonth(pubDate)}</span>
+      {series && <span class="label label-accent">{series}</span>}
+      {external && <span class="label">Medium ↗</span>}
+    </div>
+    <h3>
+      <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>{title}</a>
+    </h3>
+    <p class="desc">{description}</p>
+    <a class="read-more" href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+      Read {external ? 'on Medium' : 'more'} →
+    </a>
+  </div>
+</li>

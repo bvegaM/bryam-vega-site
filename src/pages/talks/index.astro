@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { formatMonth } from '../../lib/series';
+
+const all = (await getCollection('talks'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const upcoming = all.filter((tk) => tk.data.status === 'upcoming' || tk.data.status === 'proposed');
+const delivered = all.filter((tk) => tk.data.status === 'delivered');
+---
+
+<Base title="Talks — Bryam Vega" description="Conference talks on API-first architecture, Spring Boot, AWS, and AI-assisted engineering.">
+  <div class="container-wide">
+    <header class="article-head">
+      <span class="label">Speaking</span>
+      <h1>Talks</h1>
+      <p class="desc">
+        Delivered sessions below mirror what is published on
+        <a href="https://sessionize.com/bryam-vega/" target="_blank" rel="noopener">Sessionize</a>
+        — titles, abstracts, and event context stay current there first.
+      </p>
+    </header>
+
+    {upcoming.length > 0 && (
+      <>
+        <div class="section-head"><h2>Upcoming &amp; proposed</h2></div>
+        <ul class="talk-list">
+          {upcoming.map((tk) => (
+            <li>
+              <span class="talk-date">{formatMonth(tk.data.date)}</span>
+              <div>
+                <div class="talk-title">
+                  {tk.data.eventUrl ? <a href={tk.data.eventUrl} target="_blank" rel="noopener">{tk.data.title}</a> : tk.data.title}
+                </div>
+                <div class="talk-event">{tk.data.event} · {tk.data.location} · {tk.data.language.toUpperCase()}</div>
+              </div>
+              <span class={`talk-status ${tk.data.status}`}>{tk.data.status}</span>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    <div class="section-head"><h2>Delivered</h2></div>
+    <ul class="talk-list">
+      {delivered.map((tk) => (
+        <li>
+          <span class="talk-date">{formatMonth(tk.data.date)}</span>
+          <div>
+            <div class="talk-title">
+              {tk.data.video ? (
+                <a href={tk.data.video} target="_blank" rel="noopener">{tk.data.title}</a>
+              ) : tk.data.eventUrl ? (
+                <a href={tk.data.eventUrl} target="_blank" rel="noopener">{tk.data.title}</a>
+              ) : (
+                tk.data.title
+              )}
+            </div>
+            <div class="talk-event">
+              {tk.data.event} · {tk.data.location} · {tk.data.language.toUpperCase()}
+              {tk.data.slides && <> · <a href={tk.data.slides} target="_blank" rel="noopener">slides</a></>}
+              {tk.data.video && <> · <a href={tk.data.video} target="_blank" rel="noopener">video</a></>}
+            </div>
+          </div>
+          <span class={`talk-status ${tk.data.status}`}>{tk.data.status}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>

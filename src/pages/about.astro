@@ -1,0 +1,188 @@
+---
+import Base from '../layouts/Base.astro';
+import { withBase } from '../lib/paths';
+---
+
+<Base
+  title="About — Bryam Vega"
+  description="Senior Software Architect & Tech Lead — Java, Spring Boot, cloud-native systems, and API-first delivery. Based in Cuenca, Ecuador."
+>
+  <div class="container">
+    <header class="article-head">
+      <span class="label">About</span>
+      <h1>Bryam David Vega Moreno</h1>
+      <p class="desc">
+        Senior Software Architect &amp; Tech Lead · Java / Spring Boot / Cloud / API design · Cuenca, Ecuador (remote)
+      </p>
+    </header>
+
+    <p>
+      <a href={withBase('/bryam_vega_software_engineer_en.pdf')} target="_blank" rel="noopener">↓ Download full profile (PDF)</a>
+      ·
+      <a href="mailto:vegabryam40@gmail.com">vegabryam40@gmail.com</a>
+      ·
+      <a href="https://www.linkedin.com/in/bryam-vega" target="_blank" rel="noopener">linkedin.com/in/bryam-vega</a>
+    </p>
+
+    <h2>Professional summary</h2>
+    <p>
+      Senior Software Architect &amp; Tech Lead with 7+ years designing cloud-native systems and leading backend teams
+      across fintech and banking in Latin America. Deep experience in microservices, API-first design, and multi-cloud
+      infrastructure (AWS, GCP, Azure): technical direction, mentoring, and org-level change — from API governance
+      standards to platforms that have cut operational cycle times by 3×. Speaker at international events (including
+      apidays New York, JCONF, DevFest Ecuador, and AWS Community Day Ecuador). English C1. Currently leading backend
+      architecture at Thoughtworks for a multi-bank financial platform in Latin America.
+    </p>
+
+    <h2>Current focus</h2>
+    <p>
+      I'm extending <em>Skill-Driven Development</em> for enterprise teams — building on
+      <a href="https://zakelfassi.com" target="_blank" rel="noopener">Zak El Fassi's</a> framing — alongside
+      <strong>agent-team</strong> delivery models and an <strong>API-First Flowline</strong> at LATAM: open-tooling
+      governance (Spectral, OASDiff, contract repos, generated clients, consumer CI) so AI accelerates change while
+      automated gates protect consumers.
+    </p>
+
+    <h2>Technical skills</h2>
+    <p>
+      <strong>Backend:</strong> Java 6, 8, 11, 21 &amp; 25, Spring Boot, Spring Cloud, Hibernate, Spring Data JPA,
+      Jakarta EE, Resilience4j (circuit breaker, saga, retry, fallback, bulkhead).
+    </p>
+    <p>
+      <strong>Cloud &amp; DevOps:</strong> AWS (EC2, EKS, Lambda, S3), GCP (GKE, Pub/Sub), Azure (AKS), Docker,
+      Kubernetes, CI/CD (GitLab, Azure DevOps, GitHub Actions).
+    </p>
+    <p>
+      <strong>API &amp; architecture:</strong> OpenAPI 3.0 / 3.1, API-first / SDD, REST, GraphQL, AsyncAPI, Swagger,
+      Apigee, Spring Cloud Gateway; microservices, event-driven, CQRS, DDD, TOGAF, BIAN, C4, hexagonal, saga patterns.
+    </p>
+    <p>
+      <strong>Data &amp; messaging:</strong> Kafka, Pub/Sub, Apache Camel; PostgreSQL, Oracle, SQL Server, MongoDB,
+      Redis, DB2.
+    </p>
+    <p>
+      <strong>Quality &amp; observability:</strong> JUnit, Mockito, k6, TDD, SonarQube, OWASP Top 10, CVE analysis;
+      Dynatrace, Kibana, Grafana, Management Engine.
+    </p>
+    <p>
+      <strong>AI &amp; emerging:</strong> AI agents, MCP servers, spec-driven development (SDD).
+    </p>
+
+    <h2>Selected impact</h2>
+    <ul>
+      <li>
+        Leading adoption of an API-first engineering model at LATAM Airlines — pipeline design with the backend team;
+        contract validation cycles under 20 minutes in early implementation; methodology presented at apidays New York
+        2026.
+      </li>
+      <li>
+        Architected and led redesign of Corporación Favorita’s supply-chain processing platform — end-to-end cycle time
+        from 24 hours to 8 (~3× throughput) with a cross-functional team of five.
+      </li>
+      <li>
+        Cloud strategy across AWS, GCP, and Azure — Kubernetes deployment models, Kafka-backed event-driven designs,
+        and API gateway patterns adopted across banking and fintech clients in Latin America.
+      </li>
+      <li>
+        Built and mentored backend teams at Thoughtworks, Globant, and Devsu — technical direction, architecture
+        decisions, and engineering culture in the financial sector.
+      </li>
+    </ul>
+
+    <h2>Experience (abridged)</h2>
+
+    <h3>Thoughtworks — Nov 2024 – Present</h3>
+    <p>
+      <strong>Senior Consultant, LATAM Airlines Financial Alliances</strong> (Quito). Scalable backends for a
+      multi-bank credit-card approvals platform — resilience patterns (circuit breaker, saga, retry, bulkhead) across
+      distributed banking integrations on GCP. Lead a backend team of four: planning, syncs, performance, and delivery
+      standards. GCP Kubernetes, Pub/Sub, Cloud SQL; Java 21 &amp; 25, Spring Boot &amp; Spring Cloud, Redis, Docker,
+      Resilience4j, OpenAPI 3.1, TDD, DDD, TOGAF, REST.
+    </p>
+
+    <h3>Teaching</h3>
+    <p>
+      <strong>Universidad Católica de Cuenca</strong> — Professor, Advanced Software Engineering (Mar 2025 – Present).<br />
+      <strong>Universidad Politécnica Salesiana</strong> — Professor, Software Master’s Degree (Dec 2023 – Present).
+    </p>
+
+    <h3>Globant — May 2024 – Nov 2024</h3>
+    <p>
+      <strong>Senior Java Developer, Banco Internacional</strong> (Quito). Architecture for core banking modules
+      (reporting engine, transaction/account display); code-quality initiative (~50% fewer smells across ten repos;
+      ~80% of repos at 90%+ test coverage); ~45% fewer bugs via reviews and QA collaboration as tech lead of four;
+      Podman, Management Engine, encryption for sensitive paths; Swagger 3.0 and path-based API versioning. Stack:
+      Java 17 &amp; 21, Spring Boot, Oracle, SQL Server, DB2, Redis, Azure DevOps, Hibernate, BIAN, TDD, DDD.
+    </p>
+
+    <h3>Devsu — Jun 2023 – May 2024</h3>
+    <p>
+      <strong>Senior Java Developer, Banco Pichincha</strong> (Quito). API-first adoption with OpenAPI 3.0 as the
+      baseline for RTO projects; Apigee + Auth0; AsyncAPI and Kafka for async notifications; Postman, k6, Dynatrace.
+      Stack: Java 17, Spring Boot, reactive style, Resilience4j, saga, Kafka, Apigee, AWS EKS, Azure AKS, Oracle,
+      Redis, BIAN, TOGAF.
+    </p>
+
+    <h3>Kruger Corp — Aug 2022 – Mar 2023</h3>
+    <p>
+      <strong>Principal Consultant &amp; Tech Lead, Corporación Favorita</strong> (Quito). Reception/dispatch platform
+      — decomposition and parallelization (24h → 8h cycle); ~60% fewer bugs via refactoring, OWASP Top 10, and QA
+      practices; led five-person Scrum/Kanban team. Java 6 &amp; 8, Spring Boot, Struts, Kubernetes, Docker, DB2,
+      Hibernate, SOAP/SOA, Kibana, Azure DevOps.
+    </p>
+
+    <h3>ITNova — Dec 2021 – Aug 2022</h3>
+    <p>
+      <strong>Java Development Analyst, Gire &amp; Zurich</strong> (Quito). Legacy Struts → Java EE services for Zurich
+      Argentina; electronic check management for Gire with tokenization. Java 6–11, Spring Boot, Struts, Kafka, Docker,
+      Kubernetes, Oracle, MongoDB.
+    </p>
+
+    <p>
+      Earlier roles (Logic Studio / BICSA Panama, Politécnica Salesiana research, Gerardo Ortiz SAP/BI) and full
+      bullets are in the <a href={withBase('/bryam_vega_software_engineer_en.pdf')} target="_blank" rel="noopener">PDF</a>.
+    </p>
+
+    <h2>Speaking &amp; publications</h2>
+    <ul>
+      <li>
+        apidays New York 2026 — <em>API-First Flowline: A Fully Automated Path from AI-Driven Spec Design to Production</em>
+        (pipeline that cut contract approval from days to ~20 minutes in early runs).
+      </li>
+      <li>JCONF Peru 2025 — <em>API First en acción: del contrato a la arquitectura limpia con Spring Boot</em>.</li>
+      <li>JCONF Dominicana 2026 — accepted speaker.</li>
+      <li>DevFest Ecuador 2025 — <em>De GKE a Cloud Run…</em></li>
+      <li>AWS Community Day Ecuador 2025 &amp; 2024 — AWS/LLM scraping architecture; Big Data with EMR &amp; Spark (2024).</li>
+      <li>DevFest Ecuador 2023 — <em>Análisis de Datos con Google Colab y BigQuery</em>.</li>
+    </ul>
+    <p>
+      Delivered sessions also on
+      <a href="https://sessionize.com/bryam-vega/" target="_blank" rel="noopener">Sessionize</a>; schedule and titles on
+      the <a href={withBase('/talks/')}>talks page</a>. Technical writing on
+      <a href="https://medium.com/@vegabryam40" target="_blank" rel="noopener">Medium</a> and on this site’s
+      <a href={withBase('/blog/')}>essays</a>.
+    </p>
+
+    <h2>Education</h2>
+    <p>
+      <strong>MSc Software Engineering</strong> — mention in software architecture design (2022–2023), Politécnica
+      Salesiana, Ecuador.<br />
+      <strong>BSc Computer Science Engineering</strong> — mention in software development (2016–2021), Politécnica
+      Salesiana, Ecuador.
+    </p>
+
+    <h2>Languages</h2>
+    <p>Spanish — native · English — C1 (professional working proficiency).</p>
+
+    <h2>Elsewhere</h2>
+    <p>
+      <a href="https://medium.com/@vegabryam40" target="_blank" rel="noopener">Medium</a> ·
+      <a href="https://github.com/bvegaM" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://www.linkedin.com/in/bryam-vega" target="_blank" rel="noopener">LinkedIn</a> ·
+      <a href="https://sessionize.com/bryam-vega" target="_blank" rel="noopener">Sessionize</a>
+    </p>
+
+    <h2>Contact</h2>
+    <p><a href="mailto:vegabryam40@gmail.com">vegabryam40@gmail.com</a></p>
+  </div>
+</Base>

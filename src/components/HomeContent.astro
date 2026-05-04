@@ -1,0 +1,166 @@
+---
+import { getCollection } from 'astro:content';
+import { SERIES, slugifySeries, formatMonth } from '../lib/series';
+import { withBase } from '../lib/paths';
+import PostCard from './PostCard.astro';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const recentPosts = allPosts.slice(0, 4);
+const latestPost = allPosts[0];
+
+const talks = (await getCollection('talks'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
+
+const seriesCards = SERIES
+  .map((s) => {
+    const posts = allPosts.filter((p) => p.data.series === s.name);
+    return { meta: s, posts, latest: posts[0] };
+  })
+  .filter((s) => s.posts.length > 0);
+---
+
+<div class="container-wide">
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="label">Senior Software Architect · Tech Lead · Speaker</span>
+    <h1>Ideas forged in real work, sharpened into writing for builders — <em>engineering and design</em>, released into the open.</h1>
+    <p class="lede">
+      I'm Bryam Vega — software engineer with 7+ years in Java and enterprise backends. I've led agile teams
+      as a technical lead across microservices, event-driven, and monolithic architectures, using design patterns
+      and solid engineering practices to ship scalable, dependable systems. Today I focus on tech leadership and
+      high-quality solutions driven by curiosity for the craft.
+    </p>
+    <div class="hero-cta">
+      <a class="primary" href={withBase('/about/')}>Start here →</a>
+      {latestPost && (
+        <a class="secondary" href={latestPost.data.canonical ?? withBase(`/blog/${latestPost.slug}/`)}
+           target={latestPost.data.canonical ? '_blank' : undefined}
+           rel={latestPost.data.canonical ? 'noopener' : undefined}>Read the latest essay</a>
+      )}
+    </div>
+
+    <div class="identity-strip">
+      <div class="cell">
+        <span class="cell-label">Company</span>
+        <span class="cell-value">Thoughtworks</span>
+      </div>
+      <div class="cell">
+        <span class="cell-label">Role</span>
+        <span class="cell-value">Senior Consultant · University Teacher</span>
+      </div>
+      <div class="cell">
+        <span class="cell-label">Topics</span>
+        <span class="cell-value">Cloud Computing · Lead Team Management · AI</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT I'M BUILDING NOW -->
+  <div class="section-head">
+    <h2>What I'm building now</h2>
+  </div>
+  <p class="section-lede">
+    A snapshot of what I'm shipping and thinking about lately — the cards below carry the specifics.
+  </p>
+
+  <div class="now-grid">
+    <div class="now-card">
+      <span class="now-eyebrow">Agents · Delivery</span>
+      <h3>Agent teams for parallel, effective progress</h3>
+      <p>
+        Multi-agent workflows split the work: specs, refactors, and reviews advance in parallel instead of waiting on a
+        single thread. Same review discipline — different throughput — when the model is choreographed around clear
+        ownership and merge gates.
+      </p>
+    </div>
+    <div class="now-card">
+    
+      <span class="now-eyebrow">API governance · Design</span>
+      <h3>API-First Flowline</h3>
+      <p>
+        AI-accelerated API governance with open tooling — no monolithic enterprise hub. Standards and Spectral rules
+        feed an eight-stage pipeline: governed baselines → AI-assisted OpenAPI with human review → contract diffs in
+        MRs → Spectral plus OASDiff gates → published docs and generated clients → consumer CI checks → runtime signals
+        feeding policy again. Stages 0–2 and 5 in production; gates, docs, and adoption maturing next.
+      </p>
+    </div>
+  </div>
+
+  <!-- LATEST ESSAYS -->
+  <div class="section-head">
+    <h2>Latest essays</h2>
+    <a href={withBase('/blog/')}>All essays</a>
+  </div>
+
+  {recentPosts.length > 0 ? (
+    <ul class="post-card-list">
+      {recentPosts.map((p) => (
+        <PostCard
+          slug={p.slug}
+          title={p.data.title}
+          description={p.data.description}
+          pubDate={p.data.pubDate}
+          heroImage={p.data.heroImage}
+          series={p.data.series}
+          canonical={p.data.canonical}
+        />
+      ))}
+    </ul>
+  ) : (
+    <p class="section-lede">No essays yet — first one is in draft.</p>
+  )}
+
+  <!-- SERIES MAP -->
+  {seriesCards.length > 0 && (
+    <>
+      <div class="section-head">
+        <h2>Writing tracks</h2>
+        <a href={withBase('/series/')}>All series</a>
+      </div>
+      <p class="section-lede">The essay series and investigations where the operating notes are being written in public.</p>
+
+      <div class="series-grid">
+        {seriesCards.map(({ meta, posts, latest }) => (
+          <div class="series-card">
+            <span class="series-eyebrow">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</span>
+            <h3>{meta.name}</h3>
+            <p class="series-desc">{meta.description}</p>
+            {latest && (
+              <a class="series-latest" href={latest.data.canonical ?? withBase(`/blog/${latest.slug}/`)}
+                 target={latest.data.canonical ? '_blank' : undefined}
+                 rel={latest.data.canonical ? 'noopener' : undefined}>
+                <span class="meta">{formatMonth(latest.data.pubDate)}</span>
+                {latest.data.title}
+              </a>
+            )}
+            <a class="series-all" href={`${withBase('/series/')}#${slugifySeries(meta.name)}`}>See all</a>
+          </div>
+        ))}
+      </div>
+    </>
+  )}
+
+  <!-- TALKS -->
+  <div class="section-head">
+    <h2>Upcoming &amp; recent talks</h2>
+    <a href={withBase('/talks/')}>All talks</a>
+  </div>
+
+  <ul class="talk-list">
+    {talks.map((tk) => (
+      <li>
+        <span class="talk-date">{formatMonth(tk.data.date)}</span>
+        <div>
+          <div class="talk-title">{tk.data.title}</div>
+          <div class="talk-event">{tk.data.event} · {tk.data.location}</div>
+        </div>
+        <span class={`talk-status ${tk.data.status}`}>{tk.data.status}</span>
+      </li>
+    ))}
+  </ul>
+
+</div>
