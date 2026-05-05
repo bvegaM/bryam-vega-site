@@ -2,7 +2,7 @@
 // with the matching `series:` field in their frontmatter.
 
 export type SeriesMeta = {
-  id: string;          // slug used in URL fragments
+  id: string;          // fragment on `/series/` (`#id`), stable short slug (e.g. ia, apis)
   name: string;        // canonical name (must match `series:` in post frontmatter)
   description: string;
 };
@@ -12,25 +12,31 @@ export const SERIES: SeriesMeta[] = [
     id: 'architecture-and-design',
     name: 'Architecture & Design',
     description:
-      'Hexagonal architecture, design patterns, and the discipline of structuring software for change.',
+      'Structuring systems so change stays affordable—boundaries, coupling, and the habits that keep big codebases honest when requirements shift.',
   },
   {
     id: 'spring-boot',
     name: 'Spring Boot',
     description:
-      'Patterns and antipatterns from Spring Boot in production — from caching and OpenFeign to the quirks of OPTIONS and HEAD requests.',
+      'Production-shaped Spring—what works under load, what fails quietly, and the sharp edges around HTTP clients, caching, resilience, and framework defaults.',
   },
   {
     id: 'design-patterns',
     name: 'Design Patterns',
     description:
-      'A working tour through behavioral, structural, and creational design patterns — when to reach for them and when to leave them alone.',
+      'Patterns as vocabulary, not decoration: when a name earns its complexity, when it hides a smell, and how to apply classics without ceremony.',
   },
   {
-    id: 'skill-driven-development',
-    name: 'Skill-Driven Development',
+    id: 'ia',
+    name: 'IA',
     description:
-      'Enterprise extension of SkDD — what specs gave us, what skills replaced, and what is worth recovering.',
+      '',
+  },
+  {
+    id: 'apis',
+    name: 'APIs',
+    description:
+      '',
   },
 ];
 
@@ -39,6 +45,10 @@ export const slugifySeries = (s: string) =>
 
 export const findSeries = (name?: string) =>
   name ? SERIES.find((s) => s.name === name) : undefined;
+
+/** Hash target for `/series/#…` from post frontmatter `series:` name. */
+export const seriesFragmentId = (seriesName?: string) =>
+  seriesName ? (findSeries(seriesName)?.id ?? slugifySeries(seriesName)) : '';
 
 // Date formatting helpers
 export const formatDate = (date: Date) =>

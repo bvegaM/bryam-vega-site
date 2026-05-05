@@ -26,14 +26,25 @@ if (isGithubPages && siteUrlOverride) {
   base = isUserPagesRepo ? '/' : `/${ghRepo}/`;
 }
 
+const basePath = base.replace(/\/$/, '');
+const oldBlogPath = `${basePath}/blog/ai-accelerated-api-governance-flowline`;
+const newBlogPath = `${basePath}/blog/api-first-flowline-ai-driven-spec-to-production`;
+
 // https://astro.build/config
 export default defineConfig({
   site,
   base,
+  redirects: {
+    [oldBlogPath]: newBlogPath,
+  },
   integrations: [sitemap()],
   markdown: {
     shikiConfig: {
-      theme: 'vesper',
+      themes: {
+        light: 'github-light',
+        dark: 'vesper',
+      },
+      defaultColor: false,
       wrap: true,
     },
     rehypePlugins: [...(base !== '/' ? [rehypePrefixRootPaths(base)] : [])],

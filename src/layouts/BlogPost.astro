@@ -1,6 +1,6 @@
 ---
 import Base from './Base.astro';
-import { formatDate, slugifySeries } from '../lib/series';
+import { formatDate, seriesFragmentId } from '../lib/series';
 import { withBase } from '../lib/paths';
 
 interface Props {
@@ -13,14 +13,20 @@ interface Props {
   heroImage?: string;
   heroImageCaption?: string;
   canonical?: string;
+  noIndex?: boolean;
 }
 const {
   title, description, pubDate, updatedDate,
-  tags = [], series, heroImage, heroImageCaption, canonical,
+  tags = [], series, heroImage, heroImageCaption, canonical, noIndex,
 } = Astro.props;
+
+/** Raster heroes fill a fixed aspect box; SVG keeps intrinsic sizing + letterboxing. */
+const heroIsRaster =
+  typeof heroImage === 'string' &&
+  /\.(png|jpe?g|webp|gif|avif)(\?|#|$)/i.test(heroImage);
 ---
 
-<Base title={`${title} — Bryam Vega`} description={description} ogType="article" heroImage={heroImage}>
+<Base title={`${title} — Bryam Vega`} description={description} ogType="article" heroImage={heroImage} noIndex={noIndex}>
   <div class="container">
     <article>
       <header class="article-head">
@@ -31,15 +37,21 @@ const {
         <h1>{title}</h1>
         <p class="desc">{description}</p>
         {series && (
-          <p class="label" style="margin-top: 1rem;">
-            Part of <a href={`${withBase('/series/')}#${slugifySeries(series)}`} class="label-accent">{series}</a>
+          <p class="label article-series-ref" style="margin-top: 1rem;">
+            Part of <a href={`${withBase('/series/')}#${seriesFragmentId(series)}`} class="label-accent">{series}</a>
           </p>
         )}
       </header>
 
       {heroImage && (
-        <figure class="article-hero">
-          <img src={heroImage.startsWith('/') ? withBase(heroImage) : heroImage} alt={heroImageCaption ?? title} />
+        <figure class:list={['article-hero', heroIsRaster && 'article-hero--raster']}>
+          {heroIsRaster ? (
+            <div class="article-hero-media">
+              <img src={heroImage.startsWith('/') ? withBase(heroImage) : heroImage} alt={heroImageCaption ?? title} />
+            </div>
+          ) : (
+            <img src={heroImage.startsWith('/') ? withBase(heroImage) : heroImage} alt={heroImageCaption ?? title} />
+          )}
           {heroImageCaption && <figcaption class="article-hero-caption">{heroImageCaption}</figcaption>}
         </figure>
       )}

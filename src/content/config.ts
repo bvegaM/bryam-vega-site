@@ -11,8 +11,15 @@ const blog = defineCollection({
     series: z.string().optional(),
     heroImage: z.string().optional(),
     heroImageCaption: z.string().optional(),
+    /** Omit from build entirely—no URL. Use while writing until you publish. */
     draft: z.boolean().default(false),
+    /** URL exists, but hidden from listings/search/series + `noindex` until you flip to false. */
+    unlisted: z.boolean().default(false),
     canonical: z.string().url().optional(),
+    /** Lower sorts first on the home “building now” strip; omit for normal draft essays (sorted by date). */
+    buildingOrder: z.number().optional(),
+    /** Eyebrow label on that strip (e.g. “Agents · Delivery”). If omitted, uses “Draft essay · series”. */
+    buildingEyebrow: z.string().optional(),
   }),
 });
 

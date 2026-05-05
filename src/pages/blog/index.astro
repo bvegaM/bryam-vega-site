@@ -3,7 +3,9 @@ import Base from '../../layouts/Base.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
+import { blogListingFilter } from '../../lib/blog-visibility';
+
+const posts = (await getCollection('blog', blogListingFilter))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 

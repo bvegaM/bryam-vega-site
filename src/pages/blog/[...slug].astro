@@ -24,6 +24,7 @@ const { Content } = await post.render();
   heroImage={post.data.heroImage}
   heroImageCaption={post.data.heroImageCaption}
   canonical={post.data.canonical}
+  noIndex={post.data.unlisted}
 >
   <Content />
 </BlogPost>

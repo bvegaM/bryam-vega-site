@@ -3,7 +3,7 @@ title: "SkDD: When the Skill Transcends the Spec"
 description: "A methodology that emerged from real team experience — and how it extends Spec-Driven Development rather than replacing it."
 pubDate: 2026-05-02
 tags: ["skdd", "ai-engineering", "methodology", "team-architecture"]
-series: "Skill-Driven Development"
+series: "IA"
 heroImage: "/images/blog/skdd/skdd_phases.svg"
 draft: false
 ---

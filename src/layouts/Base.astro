@@ -10,6 +10,8 @@ interface Props {
   description?: string;
   ogType?: 'website' | 'article';
   heroImage?: string;
+  /** Ask crawlers not to index (e.g. unlisted essays). */
+  noIndex?: boolean;
   /** JSON-LD object (e.g. Person + WebSite) for richer Google results */
   jsonLd?: Record<string, unknown>;
 }
@@ -18,6 +20,7 @@ const {
   description = 'Bryam Vega — Senior Software Architect & Tech Lead. Engineering notes from inside enterprise systems.',
   ogType = 'website',
   heroImage,
+  noIndex = false,
   jsonLd,
 } = Astro.props;
 
@@ -31,6 +34,7 @@ const ogImage = heroImage && Astro.site ? siteUrl(heroImage, Astro.site) : undef
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
 

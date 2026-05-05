@@ -1,10 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
-import { SERIES, slugifySeries, formatMonth } from '../lib/series';
+import { SERIES, formatMonth } from '../lib/series';
 import { withBase } from '../lib/paths';
+import { blogListingFilter } from '../lib/blog-visibility';
 
-const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+const allPosts = (await getCollection('blog', blogListingFilter))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const seriesData = SERIES.map((s) => ({
@@ -25,8 +26,8 @@ const seriesData = SERIES.map((s) => ({
       <p class="section-lede">No series with published posts yet.</p>
     ) : (
       seriesData.map(({ meta, posts }) => (
-        <section id={slugifySeries(meta.name)} style="margin-top: 3rem;">
-          <div class="section-head" style="margin-top: 0;">
+        <section id={meta.id} style="margin-top: 3rem;">
+          <div class="section-head series-track-head" style="margin-top: 0;">
             <h2>{meta.name}</h2>
             <span class="label">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</span>
           </div>
@@ -56,6 +57,11 @@ const seriesData = SERIES.map((s) => ({
 </Base>
 
 <style>
+  /* Track titles use intentional casing (IA, APIs); global .section-head h2 is uppercase */
+  .series-track-head.section-head h2 {
+    text-transform: none;
+  }
+
   .series-post-list { list-style: none; padding: 0; margin: 0; max-width: 60rem; }
   .series-post-list li { padding: 1.25rem 0; border-bottom: 1px solid var(--rule); }
   .series-post-list li:first-child { padding-top: 0; }

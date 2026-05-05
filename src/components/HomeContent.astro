@@ -1,10 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
-import { SERIES, slugifySeries, formatMonth } from '../lib/series';
+import { SERIES, formatMonth } from '../lib/series';
 import { withBase } from '../lib/paths';
 import PostCard from './PostCard.astro';
+import { blogListingFilter } from '../lib/blog-visibility';
 
-const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+const allPosts = (await getCollection('blog', blogListingFilter))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const recentPosts = allPosts.slice(0, 4);
@@ -20,6 +21,17 @@ const seriesCards = SERIES
     return { meta: s, posts, latest: posts[0] };
   })
   .filter((s) => s.posts.length > 0);
+
+const draftPosts = (await getCollection('blog', ({ data }) => data.draft)).sort((a, b) => {
+  const orderA = a.data.buildingOrder;
+  const orderB = b.data.buildingOrder;
+  const hasA = orderA != null;
+  const hasB = orderB != null;
+  if (hasA && hasB) return orderA - orderB;
+  if (hasA && !hasB) return -1;
+  if (!hasA && hasB) return 1;
+  return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+});
 ---
 
 <div class="container-wide">
@@ -64,30 +76,32 @@ const seriesCards = SERIES
     <h2>What I'm building now</h2>
   </div>
   <p class="section-lede">
-    A snapshot of what I'm shipping and thinking about lately — the cards below carry the specifics.
+    {draftPosts.length > 0 ? (
+      <>
+        Everything here is a Markdown file under <code class="mono">src/content/blog/</code> with <code class="mono">draft: true</code>
+        — same shape as an essay, including these standing snapshots. Cards stay off the public essay index until you publish.
+      </>
+    ) : (
+      <>
+        Add entries under <code class="mono">src/content/blog/</code> with <code class="mono">draft: true</code> to show work in progress here.
+      </>
+    )}
   </p>
 
   <div class="now-grid">
-    <div class="now-card">
-      <span class="now-eyebrow">Agents · Delivery</span>
-      <h3>Agent teams for parallel, effective progress</h3>
-      <p>
-        Multi-agent workflows split the work: specs, refactors, and reviews advance in parallel instead of waiting on a
-        single thread. Same review discipline — different throughput — when the model is choreographed around clear
-        ownership and merge gates.
-      </p>
-    </div>
-    <div class="now-card">
-    
-      <span class="now-eyebrow">API governance · Design</span>
-      <h3>API-First Flowline</h3>
-      <p>
-        AI-accelerated API governance with open tooling — no monolithic enterprise hub. Standards and Spectral rules
-        feed an eight-stage pipeline: governed baselines → AI-assisted OpenAPI with human review → contract diffs in
-        MRs → Spectral plus OASDiff gates → published docs and generated clients → consumer CI checks → runtime signals
-        feeding policy again. Stages 0–2 and 5 in production; gates, docs, and adoption maturing next.
-      </p>
-    </div>
+    {draftPosts.map((p) => (
+      <div class:list={['now-card', p.data.buildingOrder == null && 'now-card--draft']}>
+        <span class="now-eyebrow">
+          {p.data.buildingEyebrow ?? (
+            <>
+              Draft essay{p.data.series ? ` · ${p.data.series}` : ''}
+            </>
+          )}
+        </span>
+        <h3>{p.data.title}</h3>
+        <p>{p.data.description}</p>
+      </div>
+    ))}
   </div>
 
   <!-- LATEST ESSAYS -->
@@ -137,7 +151,7 @@ const seriesCards = SERIES
                 {latest.data.title}
               </a>
             )}
-            <a class="series-all" href={`${withBase('/series/')}#${slugifySeries(meta.name)}`}>See all</a>
+            <a class="series-all" href={`${withBase('/series/')}#${meta.id}`}>See all</a>
           </div>
         ))}
       </div>
