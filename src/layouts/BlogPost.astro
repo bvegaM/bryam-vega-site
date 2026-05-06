@@ -12,12 +12,13 @@ interface Props {
   series?: string;
   heroImage?: string;
   heroImageCaption?: string;
+  signature?: string;
   canonical?: string;
   noIndex?: boolean;
 }
 const {
   title, description, pubDate, updatedDate,
-  tags = [], series, heroImage, heroImageCaption, canonical, noIndex,
+  tags = [], series, heroImage, heroImageCaption, signature, canonical, noIndex,
 } = Astro.props;
 
 /** Raster heroes fill a fixed aspect box; SVG keeps intrinsic sizing + letterboxing. */
@@ -41,6 +42,20 @@ const heroIsRaster =
             Part of <a href={`${withBase('/series/')}#${seriesFragmentId(series)}`} class="label-accent">{series}</a>
           </p>
         )}
+        <aside class="linkedin-cta-top" aria-label="LinkedIn profile quick link">
+          <a
+            class="linkedin-quick-link"
+            href="https://www.linkedin.com/in/bryam-vega/"
+            target="_blank"
+            rel="noopener"
+            aria-label="Follow on LinkedIn"
+            title="Follow on LinkedIn"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M6.94 8.5H3.56V20h3.38V8.5Zm-1.69-1.56c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.4 3.5 5.32c0 .9.69 1.62 1.73 1.62h.02Zm6.93 13.06h3.38v-6.41c0-.34.02-.68.13-.92.27-.68.88-1.38 1.9-1.38 1.34 0 1.88 1.02 1.88 2.52V20H23v-6.6c0-3.54-1.89-5.18-4.4-5.18-2.03 0-2.94 1.12-3.45 1.91h.02V8.5h-3.38c.04 1.06 0 11.5 0 11.5Z"/>
+            </svg>
+          </a>
+        </aside>
       </header>
 
       {heroImage && (
@@ -58,20 +73,116 @@ const heroIsRaster =
 
       <slot />
 
-      {tags.length > 0 && (
-        <div class="tags">
-          {tags.map((tg) => <span class="tag">{tg}</span>)}
-        </div>
-      )}
+      <aside class="linkedin-cta label" aria-label="LinkedIn profile">
+        <span class="linkedin-cta-title">Want more content like this?</span>
+        <p class="linkedin-cta-copy">Connect with me on LinkedIn for practical insights on AI, architecture, and delivery.</p>
+        <a
+          class="linkedin-cta-link"
+          href="https://www.linkedin.com/in/bryam-vega/"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 8.5H3.56V20h3.38V8.5Zm-1.69-1.56c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.4 3.5 5.32c0 .9.69 1.62 1.73 1.62h.02Zm6.93 13.06h3.38v-6.41c0-.34.02-.68.13-.92.27-.68.88-1.38 1.9-1.38 1.34 0 1.88 1.02 1.88 2.52V20H23v-6.6c0-3.54-1.89-5.18-4.4-5.18-2.03 0-2.94 1.12-3.45 1.91h.02V8.5h-3.38c.04 1.06 0 11.5 0 11.5Z"/>
+          </svg>
+          <span>Follow on LinkedIn</span>
+        </a>
+      </aside>
 
       {canonical && (
         <p class="label" style="margin-top: 2.5rem;">
           Originally published at <a href={canonical} target="_blank" rel="noopener">{canonical}</a>
         </p>
       )}
-
       <hr />
-      <p class="label">← <a href={withBase('/blog/')}>All essays</a></p>
+      {signature && <p class="author-signature"><em>{signature}</em></p>}
+      {tags.length > 0 && (
+        <div class="tags">
+          {tags.map((tg) => <span class="tag">{tg}</span>)}
+        </div>
+      )}
+      <p class="label all-essays-link">← <a href={withBase('/blog/')}>All essays</a></p>
     </article>
   </div>
 </Base>
+
+<style>
+  article header.article-head {
+    padding-bottom: 0.35rem;
+  }
+
+  .linkedin-cta-top {
+    margin-top: 0.85rem;
+    margin-bottom: 0;
+  }
+
+  .linkedin-quick-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .linkedin-quick-link svg {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .linkedin-cta {
+    margin-top: 2rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+  }
+
+  .linkedin-cta-title {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+  }
+
+  .linkedin-cta-copy {
+    margin: 0 0 0.75rem;
+    font-size: 0.92rem;
+    letter-spacing: normal;
+    text-transform: none;
+    line-height: 1.45;
+  }
+
+  .linkedin-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.72rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: underline;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .linkedin-cta-link svg {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .linkedin-cta-link span {
+    display: block;
+    line-height: 1.1;
+    transform: translateY(1px);
+  }
+
+  .author-signature {
+    margin-top: 1rem;
+    color: var(--ink-soft);
+  }
+
+  .all-essays-link {
+    margin-top: 1.25rem !important;
+  }
+
+  .tags {
+    margin-bottom: 1rem;
+  }
+</style>

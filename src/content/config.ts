@@ -11,6 +11,7 @@ const blog = defineCollection({
     series: z.string().optional(),
     heroImage: z.string().optional(),
     heroImageCaption: z.string().optional(),
+    signature: z.string().optional(),
     /** Omit from build entirely—no URL. Use while writing until you publish. */
     draft: z.boolean().default(false),
     /** URL exists, but hidden from listings/search/series + `noindex` until you flip to false. */

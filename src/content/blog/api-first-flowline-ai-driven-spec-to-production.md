@@ -5,6 +5,7 @@ pubDate: 2026-05-04
 tags: ["api-first", "openapi", "governance", "ai-engineering", "enterprise"]
 series: "APIs"
 heroImage: "/images/blog/api-flowline/summary.png"
+signature: "Bryam David Vega Moreno is a Senior Consultant at Thoughtworks"
 draft: true
 ---
 
@@ -210,7 +211,3 @@ Next is to **finish** the middle and tail of the flowline—quality gates, docum
 That split—human judgment plus gates, not unchecked generation—is what keeps **“AI-accelerated”** from meaning **“AI-unaccountable.”**
 
 **AI gives speed. Governance gives trust. Together, they give scale.**
-
----
-
-*Bryam David Vega Moreno is a Senior Consultant at Thoughtworks*

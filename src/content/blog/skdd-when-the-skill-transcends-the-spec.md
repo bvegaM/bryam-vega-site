@@ -5,6 +5,7 @@ pubDate: 2026-05-02
 tags: ["skdd", "ai-engineering", "methodology", "team-architecture"]
 series: "IA"
 heroImage: "/images/blog/skdd/skdd_phases.svg"
+signature: "Bryam David Vega Moreno is a Senior Consultant at Thoughtworks"
 draft: false
 ---
 
@@ -227,7 +228,3 @@ SkDD is not a substitute for thinking. It is a way to ensure that once your team
 Use SDD when the work demands it. Use SkDD when the work does not.
 
 The methodology should match the nature of the work, not the other way around.
-
----
-
-*Bryam David Vega Moreno is a Senior Consultant at Thoughtworks*
