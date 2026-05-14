@@ -6,7 +6,7 @@ tags: ["api-first", "openapi", "governance", "ai-engineering", "enterprise"]
 series: "APIs"
 heroImage: "/images/blog/api-flowline/summary.png"
 signature: "Bryam David Vega Moreno is a Senior Consultant at Thoughtworks"
-draft: true
+draft: false
 ---
 
 One tension shows up again and again in enterprise delivery: squads move fast—sometimes drafting with AI—against an OpenAPI file **they treat as theirs**, while architecture or platform keeps **another copy** as the baseline. Nobody argues against governance in a deck; they argue when **no one agrees which YAML is truth.** Compatibility risk lands late, and consumers notice before the org does.
