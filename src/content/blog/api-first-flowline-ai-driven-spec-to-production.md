@@ -6,7 +6,7 @@ tags: ["api-first", "openapi", "governance", "ai-engineering", "enterprise"]
 series: "APIs"
 heroImage: "/images/blog/api-flowline/summary.png"
 signature: "Bryam David Vega Moreno is a Senior Consultant at Thoughtworks"
-draft: true
+draft: false
 ---
 
 One tension shows up again and again in enterprise delivery: squads move fast—sometimes drafting with AI—against an OpenAPI file **they treat as theirs**, while architecture or platform keeps **another copy** as the baseline. Nobody argues against governance in a deck; they argue when **no one agrees which YAML is truth.** Compatibility risk lands late, and consumers notice before the org does.
@@ -158,6 +158,22 @@ AI belongs **inside** the workflow by design. It is never treated as an uncontro
 ## Evidence you can clone, not slides alone
 
 The story above is backed by a **public reference implementation** you can inspect and run yourself: [**api-flowline** on GitLab](https://gitlab.com/api-labs1/api-flowline). There you will find the automation wiring—not a slide deck—showing how policy becomes CI behavior.
+
+### How the reference runs end to end
+
+This diagram matches the same lifecycle as the eight stages above, laid out as **horizontal zones**: governance foundation, contract authoring, MR quality gates, automated delivery from `main`, then consumer adoption—with **numbered flow cues** (initiate → merge triggers delivery → published client consumed) so the eye follows the chain in one glance.
+
+![API-First Flowline: AI-driven spec-to-production — governance, MR CI gates, delivery, and feedback](/images/blog/api-flowline/pipeline_architecture.svg)
+
+**Stage 0 — Governance foundation.** **Spectral** (asset-centric rules in YAML) encodes naming, versioning, headers, and org standards. A **CI/CD rules repository on GitLab** is the shared source of truth so every pipeline inherits the same policy.
+
+**Stages 1–2 — Contract authoring and change proposal.** Requirements → tasks → **AI-assisted draft** (**Claude + NEO**) → human review → validated OpenAPI. The change lands as a **GitLab merge request** with a **diff from the baseline** on the target branch—so “what changed?” is always explicit.
+
+**Stage 3 — Quality gates on the MR pipeline.** CI runs automatically on that MR: **Spectral lint** for standards; **OASDiff** for **backward compatibility**. **Green → merge**; **red → MR blocked** until the contract is fixed or the change is scoped (for example a deliberate major bump).
+
+**Stages 4–5 — Delivery from `main`.** After merge, **Redocly** publishes documentation from the validated contract, and **OpenAPI Generator** builds and publishes an **immutable client package**. The **Spring Boot** service (or equivalent) implements against the **same contract** so runtime, docs, and generated clients stay aligned.
+
+**Stages 6–7 — Adoption and feedback.** Consumer teams run **consumer pipelines** / CI against the published contract so schema drift surfaces at build time. **Observability** and runtime friction feed **governance updates**—the diagram’s loop is explicit: **stage 7 feeds back into stage 1** (authoring and standards evolve from evidence, not assumptions).
 
 Concretely, the repo demonstrates **enforceable** outcomes, not only artifacts:
 
