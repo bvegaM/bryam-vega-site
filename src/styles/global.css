@@ -531,10 +531,6 @@ article header.article-head .desc {
 }
 article .article-hero {
   margin: 0 0 2.5rem;
-  background: var(--bg-soft);
-  border: 1px solid var(--rule);
-  overflow: hidden;
-  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -555,7 +551,6 @@ article .article-hero--raster {
   flex-direction: column;
   align-items: stretch;
   width: 100%;
-  padding: 0.5rem 0.75rem;
   box-sizing: border-box;
   gap: 0.35rem;
 }

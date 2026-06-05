@@ -3,7 +3,7 @@ title: "API-First Flowline: A Fully Automated Path from AI-Driven Spec Design to
 event: "apidays New York"
 location: "New York, USA"
 date: 2026-05-14
-status: upcoming
+status: delivered
 language: en
 abstract: >
   API-First often fails for the same recurring reasons: contracts live in PDFs, code lives in Git, and governance
