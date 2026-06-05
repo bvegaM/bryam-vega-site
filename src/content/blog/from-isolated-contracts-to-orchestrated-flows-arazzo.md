@@ -9,7 +9,7 @@ signature: "Bryam David Vega Moreno is a Senior Consultant at Thoughtworks"
 draft: false
 ---
 
-I had never heard of Arazzo until I attended Frank Kilcommins' session at Apidays New York 2026. Frank is one of the most active contributors at the OpenAPI Initiative, and in that talk he presented **version 1.1.0 of the Arazzo specification**, which among other things adds support for **AsyncAPI** —a step that extends Arazzo's reach beyond HTTP flows into event-driven architectures.
+I had never heard of Arazzo until I attended [Frank Kilcommins](https://www.linkedin.com/in/frank-kilcommins/) session at Apidays New York 2026. Frank is one of the most active contributors at the OpenAPI Initiative, and in that talk he presented **version 1.1.0 of the Arazzo specification**, which among other things adds support for **AsyncAPI** —a step that extends Arazzo's reach beyond HTTP flows into event-driven architectures.
 
 What hooked me wasn't the technology itself but the problem it solves. At some point in the talk, a phrase landed that articulated something I had felt but never been able to name: **the problem isn't that we don't have good API contracts; the problem is that contracts don't talk to each other.**
 
