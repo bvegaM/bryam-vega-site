@@ -323,11 +323,13 @@ When flows are first-class artifacts —versioned, reviewable, executable— thi
 - **Integration testing stops being handcrafted** and starts being derived from the specification.
 - **Governance covers the sequence**, not just the endpoint.
 
+This last point is becoming especially relevant for **AI agents**. When an LLM-based agent needs to consume APIs, it doesn't just need to know the individual endpoints —it needs to understand the correct sequence of calls, how data flows between them, and what to do when a step fails. An Arazzo file gives the agent exactly that: a machine-readable, deterministic description of the business flow, instead of leaving it to infer the order from scattered documentation. Arazzo becomes a contract not only for human consumers, but for autonomous agents orchestrating APIs on our behalf.
+
 ---
 
 ## A young standard, a fast-growing ecosystem
 
-Arazzo 1.0.0 was published by the OpenAPI Initiative in 2024. In less than two years it already has support in Speakeasy, Microcks, Redocly, and Portman.
+Arazzo 1.0.0 was published by the OpenAPI Initiative in 2024. And the ecosystem is already moving: **version 1.1.0 adds support for AsyncAPI**, extending Arazzo beyond synchronous HTTP flows into event-driven architectures. A workflow can now orchestrate steps that span REST calls and asynchronous messages in the same file —a sign that the standard is evolving fast to cover the way modern systems actually communicate.
 
 The path Arazzo is tracing is the same one OpenAPI traveled: going from a team-by-team artisanal practice to a standard that tools understand. When that happens, governance stops being a manual process and becomes something the toolchain can execute.
 
