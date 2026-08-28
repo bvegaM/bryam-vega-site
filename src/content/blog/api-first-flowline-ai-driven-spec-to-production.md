@@ -5,7 +5,7 @@ pubDate: 2026-05-04
 tags: ["api-first", "openapi", "governance", "ai-engineering", "enterprise"]
 series: "APIs"
 heroImage: "/images/blog/api-flowline/summary.png"
-signature: "Bryam David Vega Moreno is a Senior Consultant at Thoughtworks"
+signature: "Bryam David Vega Moreno is a Lead Consultant at Thoughtworks"
 draft: false
 ---
 

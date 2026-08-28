@@ -5,7 +5,7 @@ pubDate: 2026-06-04
 tags: ["arazzo", "openapi", "api-governance", "workflows", "apidays"]
 series: "APIs"
 heroImage: "/images/blog/arazzo/arazzo-hero.png"
-signature: "Bryam David Vega Moreno is a Senior Consultant at Thoughtworks"
+signature: "Bryam David Vega Moreno is a Lead Consultant at Thoughtworks"
 draft: false
 ---
 

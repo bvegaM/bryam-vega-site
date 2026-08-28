@@ -5,6 +5,6 @@ pubDate: 2026-05-01
 draft: true
 buildingOrder: 1
 buildingEyebrow: "Agents · Delivery"
-signature: "Bryam David Vega Moreno is a Senior Consultant at Thoughtworks"
+signature: "Bryam David Vega Moreno is a Lead Consultant at Thoughtworks"
 tags: ["building-now"]
 ---

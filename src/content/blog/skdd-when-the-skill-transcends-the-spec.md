@@ -5,7 +5,7 @@ pubDate: 2026-05-02
 tags: ["skdd", "ai-engineering", "methodology", "team-architecture"]
 series: "IA"
 heroImage: "/images/blog/skdd/skdd_phases.svg"
-signature: "Bryam David Vega Moreno is a Senior Consultant at Thoughtworks"
+signature: "Bryam David Vega Moreno is a Lead Consultant at Thoughtworks"
 draft: false
 ---
 
