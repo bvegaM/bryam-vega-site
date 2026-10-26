@@ -8,6 +8,8 @@ heroImage: "/images/blog/arazzo-studio/hero.png"
 heroImageCaption: "Arazzo Studio: the flow of a workflow and, when a step fails, exactly why."
 signature: "Bryam David Vega Moreno is a Lead Consultant at Thoughtworks"
 draft: false
+buildingOrder: 1
+buildingEyebrow: "Open source · Arazzo"
 ---
 
 A few months ago I wrote about [how I discovered Arazzo](/blog/from-isolated-contracts-to-orchestrated-flows-arazzo/) after Frank Kilcommins' session at Apidays New York, and why I believe it deserves a place in every conversation about API governance. That article was about the **why**. This one is about what happened next, when the theory ran into a real problem on my desk.
