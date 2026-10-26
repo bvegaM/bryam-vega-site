@@ -3,7 +3,7 @@ title: "From Signal-to-Fix to Signal-to-Understanding: Agentic AIOps on Bedrock 
 event: "AWS Community Day Ecuador"
 location: "Cuenca, Ecuador"
 date: 2026-09-05
-status: upcoming
+status: delivered
 language: en
 abstract: >
   Most AIOps platforms are designed around a flawed assumption: every incident is a software bug waiting to be patched.
