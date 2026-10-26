@@ -22,7 +22,9 @@ const seriesCards = SERIES
   })
   .filter((s) => s.posts.length > 0);
 
-const draftPosts = (await getCollection('blog', ({ data }) => data.draft)).sort((a, b) => {
+// "What I'm building now": drafts in progress, plus published essays marked with `buildingOrder`
+// (a project that just shipped and is still evolving). Published ones link to the essay.
+const buildingPosts = (await getCollection('blog', ({ data }) => data.draft || (data.buildingOrder != null && !data.unlisted))).sort((a, b) => {
   const orderA = a.data.buildingOrder;
   const orderB = b.data.buildingOrder;
   const hasA = orderA != null;
@@ -78,19 +80,30 @@ const draftPosts = (await getCollection('blog', ({ data }) => data.draft)).sort(
   <p class="section-lede">A snapshot of what I'm shipping and thinking about lately.</p>
 
   <div class="now-grid">
-    {draftPosts.map((p) => (
-      <div class:list={['now-card', p.data.buildingOrder == null && 'now-card--draft']}>
-        <span class="now-eyebrow">
-          {p.data.buildingEyebrow ?? (
-            <>
-              Draft essay{p.data.series ? ` · ${p.data.series}` : ''}
-            </>
+    {buildingPosts.map((p) => {
+      const published = !p.data.draft;
+      const href = withBase(`/blog/${p.slug}/`);
+      const hero = published && p.data.heroImage ? withBase(p.data.heroImage) : undefined;
+      return (
+        <div class:list={['now-card', !published && p.data.buildingOrder == null && 'now-card--draft', hero && 'now-card--flowline']}>
+          {hero && (
+            <a href={href} aria-hidden="true" tabindex="-1">
+              <img class="now-card-hero" src={hero} alt="" />
+            </a>
           )}
-        </span>
-        <h3>{p.data.title}</h3>
-        <p>{p.data.description}</p>
-      </div>
-    ))}
+          <span class="now-eyebrow">
+            {p.data.buildingEyebrow ?? (
+              <>
+                Draft essay{p.data.series ? ` · ${p.data.series}` : ''}
+              </>
+            )}
+          </span>
+          <h3>{p.data.title}</h3>
+          <p>{p.data.description}</p>
+          {published && <a class="now-cta" href={href}>Read the essay</a>}
+        </div>
+      );
+    })}
   </div>
 
   <!-- LATEST ESSAYS -->
